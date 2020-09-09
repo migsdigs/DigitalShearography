@@ -27,7 +27,7 @@ class DS_GUI(tk.Tk):
         
         #Themes and Styling
         style = ttk.Style(self)
-        style.theme_use("clam")
+        #style.theme_use("clam")
 
         style.configure("Background.TFrame", background=COLOUR_PRIMARY)
         style.configure("TimerText.TLabel", background=COLOUR_LIGHT_BACKGROUND, foreground=COLOUR_DARK_TEXT, font="Courier 38")
@@ -38,6 +38,9 @@ class DS_GUI(tk.Tk):
         main_container.grid(row=0, column=0)
         main_container.columnconfigure(0, weight=2)
         main_container.columnconfigure(1, weight=1)
+
+        main_container.rowconfigure(0, weight=1)        #play around this
+        main_container.rowconfigure(1, weight=2)
 
 
 
