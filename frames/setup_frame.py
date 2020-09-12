@@ -106,7 +106,7 @@ class SetupFrame(ttk.Frame):
 
 
         reference_image_delay_seconds = tk.IntVar()
-        reference_image_delay_entry = ttk.Entry(reference_image_delay_frame, width=10, textvariable=frame_capture_interval_seconds)
+        reference_image_delay_entry = ttk.Entry(reference_image_delay_frame, width=10, textvariable=reference_image_delay_seconds)
         reference_image_delay_entry.grid(row=2, column=0)
 
         reference_image_delay_set_button = ttk.Button(reference_image_delay_frame, text="Set")  #set command

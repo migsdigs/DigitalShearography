@@ -40,7 +40,7 @@ class DS_GUI(tk.Tk):
         main_container.columnconfigure(1, weight=1)
 
         main_container.rowconfigure(0, weight=1)        #play around this
-        main_container.rowconfigure(1, weight=2)
+        main_container.rowconfigure(1, weight=3)
 
 
 
