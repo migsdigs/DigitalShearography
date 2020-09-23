@@ -55,9 +55,9 @@ class DS_GUI(tk.Tk):
         self.controls_frame = ControlsFrame(main_container, controller)
         self.controls_frame.grid(row=0, column=0, columnspan=2, pady=(10), sticky="NSEW")
 
-        self.video_frame = VideoFrame(main_container, screen_width, screen_height)
+        self.video_frame = VideoFrame(main_container, screen_width, screen_height, c, 33)
         self.video_frame.grid(row=1, column=0, pady=(30), padx=(30), sticky="NSEW")
-        self.video_frame.display_video(c, 33)
+        self.video_frame.display_video()
 
 
         self.setup_frame = SetupFrame(main_container, controller)
@@ -95,7 +95,11 @@ app = DS_GUI()
 app.set_controller(controller)
 app.mainloop()
 
-c.stopCapture()
-print("stopping capture")
-c.disconnect()
-print("camera disconnected")
+try:
+    c.stopCapture()
+    print("stopping capture")
+    c.disconnect()
+    print("camera disconnected")
+
+except:
+    exit()

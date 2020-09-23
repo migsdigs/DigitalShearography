@@ -1,1 +1,2 @@
-video_frame
+
+app.set_controller(controller)

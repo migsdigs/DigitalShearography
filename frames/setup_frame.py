@@ -16,7 +16,7 @@ class SetupFrame(ttk.Frame):
         inspection_setup_label = ttk.Label(inspection_setup_frame, text="INSPECTION SETUP")
         inspection_setup_label.grid(row=0, column=0, pady = 5)
 
-        self.start_inspection_button = ttk.Button(inspection_setup_frame, text = "START INSPECTION")     #set command
+        self.start_inspection_button = ttk.Button(inspection_setup_frame, text = "START INSPECTION", command = controller.start)     #set command
         self.start_inspection_button.grid(row=1, column=0, pady=5, ipadx=40, ipady=20)
 
 
@@ -41,7 +41,7 @@ class SetupFrame(ttk.Frame):
         self.inspection_time_limit_entry = ttk.Entry(inspection_time_limit_Frame, width=10, textvariable=self.inspection_time_limit_mins, state="disabled")
         self.inspection_time_limit_entry.grid(row=2, column=0)
 
-        self.inspection_time_limit_set_button = ttk.Button(inspection_time_limit_Frame, text="Set", state="disabled", command = controller.inspection_time_limit_set)  #set command
+        self.inspection_time_limit_set_button = ttk.Button(inspection_time_limit_Frame, text="Set", state="disabled", command = controller.inspection_time_limit_set)  
         self.inspection_time_limit_set_button.grid(row=2, column=1)
 
 
@@ -67,7 +67,7 @@ class SetupFrame(ttk.Frame):
         self.frame_capture_interval_entry = ttk.Entry(Frame_capture_interval_frame, width=10, textvariable=self.frame_capture_interval_seconds, state="disabled")
         self.frame_capture_interval_entry.grid(row=2, column=0)
 
-        self.frame_capture_interval_set_button = ttk.Button(Frame_capture_interval_frame, text="Set", state="disabled")  
+        self.frame_capture_interval_set_button = ttk.Button(Frame_capture_interval_frame, text="Set", state="disabled", command = controller.frame_capture_interval_set)  
         self.frame_capture_interval_set_button.grid(row=2, column=1)
 
 
@@ -93,7 +93,7 @@ class SetupFrame(ttk.Frame):
         self.reference_image_delay_entry = ttk.Entry(reference_image_delay_frame, width=10, textvariable=self.reference_image_delay_seconds, state="disabled")
         self.reference_image_delay_entry.grid(row=2, column=0)
 
-        self.reference_image_delay_set_button = ttk.Button(reference_image_delay_frame, text="Set", state="disabled")  #set command
+        self.reference_image_delay_set_button = ttk.Button(reference_image_delay_frame, text="Set", state="disabled", command = controller.reference_image_delay_set)  
         self.reference_image_delay_set_button.grid(row=2, column=1)
 
 

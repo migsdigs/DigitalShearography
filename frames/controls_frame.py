@@ -21,11 +21,11 @@ class ControlsFrame(ttk.Frame):
         snapshot_frame = ttk.Frame(main_control_frame, padding=15)
         snapshot_frame.grid(row=0, column=0)
 
-        new_window_button = ttk.Button(snapshot_frame, text="New Inspection", state="disabled")   #set command
-        new_window_button.grid(row=0, column=0)
+        self.new_window_button = ttk.Button(snapshot_frame, text="New Inspection", state="disabled")   #set command
+        self.new_window_button.grid(row=0, column=0)
 
-        snapshot__button = ttk.Button(snapshot_frame, text="Snapshot Frame", state="disabled")
-        snapshot__button.grid(row=0, column=1)
+        self.snapshot_button = ttk.Button(snapshot_frame, text="Snapshot Frame", state="disabled", command=controller.save_snapshot)
+        self.snapshot_button.grid(row=0, column=1)
 
 
             #Video Controls Frame and Buttons
@@ -46,11 +46,11 @@ class ControlsFrame(ttk.Frame):
         video_mode_frame = ttk.Frame(main_control_frame, padding=20)
         video_mode_frame.grid(row=0, column=2)
 
-        real_time_video_button = ttk.Button(video_mode_frame, text="Video Mode", state="disabled")
-        real_time_video_button.grid(row=0, column=0)
+        self.real_time_video_button = ttk.Button(video_mode_frame, text="Video Mode", state="disabled", command = controller.display_video)
+        self.real_time_video_button.grid(row=0, column=0)
 
-        fringe_pattern_button = ttk.Button(video_mode_frame, text="Fringe Pattern Mode", state="disabled")
-        fringe_pattern_button.grid(row=0, column=1)
+        self.fringe_pattern_button = ttk.Button(video_mode_frame, text="Fringe Pattern Mode", state="disabled", command = controller.display_fringes)
+        self.fringe_pattern_button.grid(row=0, column=1)
 
 
             #Initialisation File Import
