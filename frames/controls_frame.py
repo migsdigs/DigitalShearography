@@ -61,7 +61,7 @@ class ControlsFrame(ttk.Frame):
         self.folder_entry = ttk.Entry(image_folder_frame, width=20, textvariable = self.folder_directory)
         self.folder_entry.grid(row=1, column=0)
 
-        self.folder_set_button = ttk.Button(image_folder_frame, text="Set Image Folder")    #set command
+        self.folder_set_button = ttk.Button(image_folder_frame, text="Set Folder", command = controller.get_save_location)    
         self.folder_set_button.grid(row=1, column=1)
 
 
@@ -72,12 +72,12 @@ class ControlsFrame(ttk.Frame):
         import_file_path_label = ttk.Label(initialisation_frame, text="Initialisation file")
         import_file_path_label.grid(row=0, column=0)
 
-        file_path = tk.StringVar()
-        import_entry = ttk.Entry(initialisation_frame, width=20, textvariable=file_path)
-        import_entry.grid(row=1, column=0)
+        self.file_path = tk.StringVar()
+        self.import_entry = ttk.Entry(initialisation_frame, width=20, textvariable=self.file_path)
+        self.import_entry.grid(row=1, column=0)
 
-        import_button = ttk.Button(initialisation_frame, text="Import Initialisation File")    #set command
-        import_button.grid(row=1, column=1)
+        self.import_button = ttk.Button(initialisation_frame, text="Import File")    #set command
+        self.import_button.grid(row=1, column=1)
 
 
 

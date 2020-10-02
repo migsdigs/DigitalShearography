@@ -30,7 +30,6 @@ class VideoFrame(ttk.Frame):
         self.video_display_label = ttk.Label(video_frame)
         self.video_display_label.grid(row=0, column=0)
 
-        
     
     def capture_reference_image(self):      #only to be called once
         ref_buffer = self.cam.retrieveBuffer()
@@ -79,16 +78,18 @@ class VideoFrame(ttk.Frame):
         self.display_video()
     
     def stop_video(self):
+        self.cam.stopCapture()
+        print("stopping capture")
+        self.cam.disconnect()
+        print("camera disconnected")
+
         self.stop_image = Image.open("./Assets/stop.JPG").resize((self.screen_width-700,self.screen_height-300))
         self.stop_photo = ImageTk.PhotoImage(self.stop_image)
         
         self.video_display_label.config(image=self.stop_photo)
         self.video_display_label.image = self.stop_photo
 
-        self.cam.stopCapture()
-        print("stopping capture")
-        self.cam.disconnect()
-        print("camera disconnected")
+        
 
     
 

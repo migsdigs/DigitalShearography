@@ -40,23 +40,26 @@ class Controller():
         self.controls_frame.pause_button["state"] = "disabled"
         self.controls_frame.play_button["state"] = "enabled"
         self.controls_frame.stop_button["state"] = "enabled"
-        #print("video paused")
+        
     
-    def play(self):     #method to play cideo
+    def play(self):     #method to play video
         self.video_frame.play_video()
         self.controls_frame.play_button["state"] = "disabled"
         self.controls_frame.pause_button["state"] = "enabled"
         self.controls_frame.stop_button["state"] = "disabled"
-        #print("video played")
+        
     
     def stop(self):     #method to stop video/inspection
         self.video_frame.stop_video()
         self.controls_frame.play_button["state"] = "disabled"
         self.controls_frame.pause_button["state"] = "disabled"
         self.controls_frame.stop_button["state"] = "disabled"
-        #print("video stopped")
 
-    
+        self.controls_frame.snapshot_button["state"] = "disabled"
+        self.controls_frame.real_time_video_button["state"] = "disabled"
+        self.controls_frame.fringe_pattern_button["state"] = "disabled"
+
+
     def display_fringes(self):  #display fringes when fringe display button is pressed
         self.video_frame.display_fringes_flag = True
         self.controls_frame.fringe_pattern_button["state"] = "disabled"
@@ -72,13 +75,28 @@ class Controller():
     ######################## METHODS FOR IMAGES & SAVING ########################
   
     def save_snapshot(self):    #method to save images when snapshot button is hit
-        snapshot_name = "snapshot"+str(self.save_count)+".jpeg"
-        self.video_frame.img.save(snapshot_name)
+        if self.save_location_flag:
+            try:
+                snapshot_name = self.save_location+"\\snapshot"+str(self.save_count)+".jpeg"
+                self.video_frame.img.save(snapshot_name)
+            except:
+                snapshot_name = "snapshot"+str(self.save_count)+".jpeg"
+                self.video_frame.img.save(snapshot_name)
+        else:
+            snapshot_name = "snapshot"+str(self.save_count)+".jpeg"
+            self.video_frame.img.save(snapshot_name)
         self.save_count = self.save_count+1
 
 
     def save_ref_image(self):   #method to save the reference image once it is taken
-        self.video_frame.ref_img.save("reference_image.jpeg")
+        if self.save_location_flag:
+            try:
+                self.video_frame.ref_img.save(self.save_location + "\\reference_image.jpeg")
+            except:
+                self.video_frame.ref_img.save("reference_image.jpeg")
+        
+        else:
+            self.video_frame.ref_img.save("reference_image.jpeg")
 
 
     def frame_capture_save(self):    #method to save images at set intervals
@@ -86,10 +104,18 @@ class Controller():
 
         if self.frame_capture_interval_flag:
             if self.frame_capture_interval > 0: #checking that the interval (seconds) set is valid
-            
-                frame_capture_name = "interval_capture"+str(self.interval_save_count)+".jpeg"
-                self.video_frame.img.save(frame_capture_name)
-                print("saved frame")
+                if self.save_location_flag:
+                    try:
+                        frame_capture_name = self.save_location + "\\interval_capture"+str(self.interval_save_count)+".jpeg"
+                        self.video_frame.img.save(frame_capture_name)
+                
+                    except:
+                        frame_capture_name = "interval_capture"+str(self.interval_save_count)+".jpeg"
+                        self.video_frame.img.save(frame_capture_name)
+                else:
+                    frame_capture_name = "interval_capture"+str(self.interval_save_count)+".jpeg"
+                    self.video_frame.img.save(frame_capture_name)
+
                 self.interval_save_count = self.interval_save_count+1
                 self.setup_frame.start_inspection_button.after(frame_capture_interval_milliseconds, lambda: self.frame_capture_save())            
 
@@ -97,6 +123,7 @@ class Controller():
     def get_save_location(self):
         self.save_location = self.controls_frame.folder_directory.get()
         self.save_location_flag = True
+        print(self.save_location)
         
 
     ######################## METHODS FOR START INSPECTION ########################
@@ -106,16 +133,25 @@ class Controller():
 
         self.setup_frame.inspection_time_limit_check_button["state"] = "disabled"
         self.setup_frame.inspection_time_limit_set_button["state"] = "disabled"
+        self.setup_frame.inspection_time_limit_entry["state"] = "disabled"
 
         self.setup_frame.frame_capture_interval_check_button["state"] = "disabled"
         self.setup_frame.frame_capture_interval_check_button["state"] = "disabled"
+        self.setup_frame.frame_capture_interval_entry["state"] = "disabled"
 
         self.setup_frame.reference_image_delay_check_button["state"] = "disabled"
         self.setup_frame.reference_image_delay_set_button["state"] = "disabled"
+        self.setup_frame.reference_image_delay_entry["state"] = "disabled"
 
         self.setup_frame.start_inspection_button["state"] = "disabled"
 
         self.controls_frame.snapshot_button["state"] = "enabled"
+
+        self.controls_frame.folder_entry["state"] = "disabled"
+        self.controls_frame.folder_set_button["state"] = "disabled"
+        
+        self.controls_frame.import_entry["state"] = "disabled"
+        self.controls_frame.import_button["state"] = "disabled"
 
         self.reference_image()      #call take_reference_image method
         self.frame_capture_save()   #call frame_capture_save
@@ -150,7 +186,7 @@ class Controller():
 
     def inspection_limit_set(self):
         self.pause()
-        self.stop()
+        self.video_frame.video_display_label.after(500, lambda: self.stop())    #after 500 ms stop inspection and disconnect camera
         print("limit reached")
     
 
@@ -161,12 +197,15 @@ class Controller():
             self.setup_frame.inspection_time_limit_set_button["state"] = "enabled"
 
             self.inspection_time_limit_flag = True                                          #inspection time limit flag (used in start method later)
+        
         elif self.setup_frame.inspection_time_limit_option.get()==False:
             self.setup_frame.inspection_time_limit_entry["state"] = "disabled"
             self.setup_frame.inspection_time_limit_set_button["state"] = "disabled"
 
-            self.inspection_time_limit_flag = False  
-        
+            self.inspection_time_limit_flag = False
+
+            self.setup_frame.inspection_time_limit_value_label["text"] = "None"     #sets the text of the label to none  
+            self.inspection_time_limit = 0      #set inspection time limit to 0 if disabled
 
     def frame_capture_interval_command(self):   #Sets flags to true or false and enables/disables buttons & entry based on checkbuttons status            
         if self.setup_frame.frame_capture_interval_option.get():
@@ -174,11 +213,15 @@ class Controller():
             self.setup_frame.frame_capture_interval_set_button["state"] = "enabled"
 
             self.frame_capture_interval_flag = True                                         #inspection time limit flag (used in start method later)
+        
         elif self.setup_frame.frame_capture_interval_option.get()==False:
             self.setup_frame.frame_capture_interval_entry["state"] = "disabled"
             self.setup_frame.frame_capture_interval_set_button["state"] = "disabled"
 
             self.frame_capture_interval_flag = False 
+
+            self.setup_frame.frame_capture_interval_value_label["text"] = "None"
+            self.frame_capture_interval = 0     #set frame capture interval to 0 if disabled
 
 
     def reference_image_delay_command(self):    #Sets flags to true or false and enables/disables buttons & entry based on checkbuttons status             
@@ -187,18 +230,22 @@ class Controller():
             self.setup_frame.reference_image_delay_set_button["state"] = "enabled"
 
             self.reference_image_delay_flag = True
+        
         elif self.setup_frame.reference_image_delay_option.get()==False:
             self.setup_frame.reference_image_delay_entry["state"] = "disabled"
             self.setup_frame.reference_image_delay_set_button["state"] = "disabled"
 
             self.reference_image_delay_flag = True
 
+            self.setup_frame.reference_image_delay_value_label["text"] = "None"
+            self.reference_image_delay = 0     #set reference image delay to 0 if disabled
+
     
     def inspection_time_limit_set(self):    #sets the inspection time limit time when set button is pressed
         try:
             self.inspection_time_limit = self.setup_frame.inspection_time_limit_mins.get()
+            self.setup_frame.inspection_time_limit_value_label["text"] = str(self.inspection_time_limit)
             
-            print(self.inspection_time_limit)
         except:
             print("error")
             self.inspection_time_limit = 0
@@ -207,8 +254,8 @@ class Controller():
     def frame_capture_interval_set(self):   #sets the frame capture interval time when set button is pressed
         try:
             self.frame_capture_interval = self.setup_frame.frame_capture_interval_seconds.get()
-            
-            print(self.frame_capture_interval)
+            self.setup_frame.frame_capture_interval_value_label["text"] = str(self.frame_capture_interval)
+
         except:
             print("error")
             self.frame_capture_interval = 0
@@ -217,8 +264,8 @@ class Controller():
     def reference_image_delay_set(self):    #sets the reference image delay time when set button is pressed
         try:
             self.reference_image_delay = self.setup_frame.reference_image_delay_seconds.get()
-            
-            print(self.reference_image_delay)
+            self.setup_frame.reference_image_delay_value_label["text"] = str(self.reference_image_delay)
+
         except:
             print("error")
             self.reference_image_delay = 0   #if this remains 0, there will be no reference image delay

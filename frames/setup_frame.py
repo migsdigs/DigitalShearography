@@ -25,7 +25,7 @@ class SetupFrame(ttk.Frame):
         inspection_time_limit_Frame.grid(row=2, column=0, pady=10)
 
         inspection_time_limit_label = ttk.Label(inspection_time_limit_Frame, text="Inspection Time Limit (minutes)", padding = 10)
-        inspection_time_limit_label.grid(row=0, column=0, columnspan=2, sticky="EW")
+        inspection_time_limit_label.grid(row=0, column=0, columnspan=3, sticky="EW")
 
         self.inspection_time_limit_option = tk.BooleanVar()
 
@@ -34,7 +34,7 @@ class SetupFrame(ttk.Frame):
         variable=self.inspection_time_limit_option, 
         command = controller.inspection_time_limit_command, 
         onvalue=True, offvalue=False)
-        self.inspection_time_limit_check_button.grid(row=1, column=0, columnspan=2)
+        self.inspection_time_limit_check_button.grid(row=1, column=0, columnspan=3)
 
 
         self.inspection_time_limit_mins = tk.DoubleVar()
@@ -44,13 +44,16 @@ class SetupFrame(ttk.Frame):
         self.inspection_time_limit_set_button = ttk.Button(inspection_time_limit_Frame, text="Set", state="disabled", command = controller.inspection_time_limit_set)  
         self.inspection_time_limit_set_button.grid(row=2, column=1)
 
+        self.inspection_time_limit_value_label = ttk.Label(inspection_time_limit_Frame, text="None")
+        self.inspection_time_limit_value_label.grid(row=2, column=2)
+
 
             #Frame Capture Interval
         Frame_capture_interval_frame = ttk.Frame(inspection_setup_frame)
         Frame_capture_interval_frame.grid(row=3, column=0, pady=10)
 
         Frame_capture_interval_label = ttk.Label(Frame_capture_interval_frame, text="Frame Capture Interval (seconds)", padding = 10)
-        Frame_capture_interval_label.grid(row=0, column=0, columnspan=2, sticky="EW")
+        Frame_capture_interval_label.grid(row=0, column=0, columnspan=3, sticky="EW")
 
         self.frame_capture_interval_option = tk.BooleanVar()
 
@@ -60,7 +63,7 @@ class SetupFrame(ttk.Frame):
         variable=self.frame_capture_interval_option, 
         command = controller.frame_capture_interval_command, 
         onvalue=True, offvalue=False)
-        self.frame_capture_interval_check_button.grid(row=1, column=0, columnspan=2)
+        self.frame_capture_interval_check_button.grid(row=1, column=0, columnspan=3)
 
 
         self.frame_capture_interval_seconds = tk.IntVar()
@@ -70,13 +73,16 @@ class SetupFrame(ttk.Frame):
         self.frame_capture_interval_set_button = ttk.Button(Frame_capture_interval_frame, text="Set", state="disabled", command = controller.frame_capture_interval_set)  
         self.frame_capture_interval_set_button.grid(row=2, column=1)
 
+        self.frame_capture_interval_value_label = ttk.Label(Frame_capture_interval_frame, text="None")
+        self.frame_capture_interval_value_label.grid(row=2, column=2)
+
 
             #Reference Image Delay
         reference_image_delay_frame = ttk.Frame(inspection_setup_frame)
         reference_image_delay_frame.grid(row=4, column=0, pady=10)
 
         reference_image_delay_label = ttk.Label(reference_image_delay_frame, text="Reference Image Delay (seconds)", padding = 10)
-        reference_image_delay_label.grid(row=0, column=0, columnspan=2, sticky="EW")
+        reference_image_delay_label.grid(row=0, column=0, columnspan=3, sticky="EW")
 
         self.reference_image_delay_option = tk.BooleanVar()
 
@@ -86,7 +92,7 @@ class SetupFrame(ttk.Frame):
         variable=self.reference_image_delay_option, 
         command = controller.reference_image_delay_command, 
         onvalue=True, offvalue=False)
-        self.reference_image_delay_check_button.grid(row=1, column=0, columnspan=2)
+        self.reference_image_delay_check_button.grid(row=1, column=0, columnspan=3)
 
 
         self.reference_image_delay_seconds = tk.IntVar()
@@ -95,6 +101,9 @@ class SetupFrame(ttk.Frame):
 
         self.reference_image_delay_set_button = ttk.Button(reference_image_delay_frame, text="Set", state="disabled", command = controller.reference_image_delay_set)  
         self.reference_image_delay_set_button.grid(row=2, column=1)
+
+        self.reference_image_delay_value_label = ttk.Label(reference_image_delay_frame, text="None")
+        self.reference_image_delay_value_label.grid(row=2, column=2)
 
 
         ####################### CAMERA VARIABLES #######################

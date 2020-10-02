@@ -77,7 +77,7 @@ class DS_GUI(tk.Tk):
 
 bus = PyCapture2.BusManager()
 num_cams = bus.getNumOfCameras()
-print('Number of cameras detected: ', num_cams)
+print('Number of cameras detected:', num_cams)
 if not num_cams:
     print('Insufficient number of cameras. Exiting...')
     exit()
