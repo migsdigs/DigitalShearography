@@ -34,18 +34,20 @@ class VideoFrame(ttk.Frame):
     
     def capture_reference_image(self):      #only to be called once
         ref_buffer = self.cam.retrieveBuffer()
-        self.ref_image = np.array(ref_buffer.getData(), dtype="uint8").reshape( (ref_buffer.getRows(), ref_buffer.getCols()) )  #convert ref_buffer to numpy array
-    
+        self.ref_image = np.array(ref_buffer.getData(), dtype="uint8").reshape( (ref_buffer.getRows(), ref_buffer.getCols()) )  #convert ref_buffer to numpy array to be used in subtraction of images
+        self.ref_img = pl.Image.fromarray(self.ref_image)
+
     def display_video(self):
         image = self.cam.retrieveBuffer()
         cv_image1 = np.array(image.getData(), dtype="uint8").reshape( (image.getRows(), image.getCols()) )                      #convert image to numpy array
         #cv_image2 = np.array(image.getData(), dtype="uint8").reshape( (image.getRows(), image.getCols()) )
-
-        
-        #print(result)
+    
+            
+        #print(result)  
         #cv2.imshow('frame',result)
         #cv2.waitKey(1)
 
+    #Display real time video or fringe patterns depending on the state of the flag
         if not self.display_fringes_flag:
             self.img = pl.Image.fromarray(cv_image1)
             photo = self.img.resize((self.screen_width-700,self.screen_height-300))

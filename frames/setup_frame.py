@@ -37,7 +37,7 @@ class SetupFrame(ttk.Frame):
         self.inspection_time_limit_check_button.grid(row=1, column=0, columnspan=2)
 
 
-        self.inspection_time_limit_mins = tk.IntVar()
+        self.inspection_time_limit_mins = tk.DoubleVar()
         self.inspection_time_limit_entry = ttk.Entry(inspection_time_limit_Frame, width=10, textvariable=self.inspection_time_limit_mins, state="disabled")
         self.inspection_time_limit_entry.grid(row=2, column=0)
 

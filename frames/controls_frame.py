@@ -9,9 +9,6 @@ class ControlsFrame(ttk.Frame):
 
         self.controller = controller
 
-        #Configure self
-
-
         #Main Control Frame
         main_control_frame = ttk.Frame(self)
         main_control_frame.grid(row=0, column=0)
@@ -53,19 +50,34 @@ class ControlsFrame(ttk.Frame):
         self.fringe_pattern_button.grid(row=0, column=1)
 
 
+            #Images folder (enter directory location for saved images)
+        image_folder_frame = ttk.Frame(main_control_frame, padding=20)
+        image_folder_frame.grid(row=0, column=3)
+
+        image_folder_label = ttk.Label(image_folder_frame, text="Image Save Location")
+        image_folder_label.grid(row=0, column=0)
+
+        self.folder_directory = tk.StringVar()
+        self.folder_entry = ttk.Entry(image_folder_frame, width=20, textvariable = self.folder_directory)
+        self.folder_entry.grid(row=1, column=0)
+
+        self.folder_set_button = ttk.Button(image_folder_frame, text="Set Image Folder")    #set command
+        self.folder_set_button.grid(row=1, column=1)
+
+
             #Initialisation File Import
         initialisation_frame = ttk.Frame(main_control_frame, padding = 20)
-        initialisation_frame.grid(row=0, column=3)
+        initialisation_frame.grid(row=0, column=4)
 
-        import_file_path_label = ttk.Label(initialisation_frame, text="Initialisation file path", padding=10)
+        import_file_path_label = ttk.Label(initialisation_frame, text="Initialisation file")
         import_file_path_label.grid(row=0, column=0)
 
         file_path = tk.StringVar()
-        import_entry = ttk.Entry(initialisation_frame, width=20, textvariable=file_path, text="file path")
-        import_entry.grid(row=0, column=1)
+        import_entry = ttk.Entry(initialisation_frame, width=20, textvariable=file_path)
+        import_entry.grid(row=1, column=0)
 
-        import_button = ttk.Button(initialisation_frame, text="Import Initialisation Folder")    #set command
-        import_button.grid(row=0, column=2)
+        import_button = ttk.Button(initialisation_frame, text="Import Initialisation File")    #set command
+        import_button.grid(row=1, column=1)
 
 
 
