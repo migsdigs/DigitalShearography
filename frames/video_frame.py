@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import PIL as pl
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageEnhance
 import cv2
 import numpy as np
 
@@ -19,7 +19,11 @@ class VideoFrame(ttk.Frame):
         self.display_fringes_flag = False   #A flag to be used to determine if fringes or real time video must be displayed
         self.ref_image = None
         self.img = None
-        
+
+        #Camera Variable Values
+        self.brightness_value = 1.0
+        self.contrast_value = 1.0
+        self.exposure_value = 1.0
 
         #Frames
         video_frame = ttk.Frame(self)
@@ -34,24 +38,24 @@ class VideoFrame(ttk.Frame):
     def capture_reference_image(self):      #only to be called once
         ref_buffer = self.cam.retrieveBuffer()
         self.ref_image = np.array(ref_buffer.getData(), dtype="uint8").reshape( (ref_buffer.getRows(), ref_buffer.getCols()) )  #convert ref_buffer to numpy array to be used in subtraction of images
+        #self.ref_image = np.flip(self.ref_image, axis=0) 
         self.ref_img = pl.Image.fromarray(self.ref_image)
 
     def display_video(self):
         image = self.cam.retrieveBuffer()
         cv_image1 = np.array(image.getData(), dtype="uint8").reshape( (image.getRows(), image.getCols()) )                      #convert image to numpy array
-        #cv_image2 = np.array(image.getData(), dtype="uint8").reshape( (image.getRows(), image.getCols()) )
-    
-            
-        #print(result)  
-        #cv2.imshow('frame',result)
-        #cv2.waitKey(1)
+        #cv_image1 = np.flip(cv_image1, axis=0)
 
     #Display real time video or fringe patterns depending on the state of the flag
         if not self.display_fringes_flag:
             self.img = pl.Image.fromarray(cv_image1)
-            photo = self.img.resize((self.screen_width-700,self.screen_height-300))
 
-            display_image = ImageTk.PhotoImage(photo)
+            contrastImg = ImageEnhance.Contrast(self.img)
+            Enhanced_img = contrastImg.enhance(self.contrast_value)     #adjusting image to desired contrast
+            
+            self.photo = Enhanced_img.resize((self.screen_width-700,self.screen_height-300))
+            
+            display_image = ImageTk.PhotoImage(self.photo)
             self.video_display_label.config(image=display_image)
             self.video_display_label.image = display_image
         
@@ -59,9 +63,13 @@ class VideoFrame(ttk.Frame):
             self.difference = cv2.absdiff(cv_image1,self.ref_image)    #subtract the current image from the reference image
 
             self.img = pl.Image.fromarray(self.difference)
-            photo = self.img.resize((self.screen_width-700,self.screen_height-300))
+            
+            contrastImg = ImageEnhance.Contrast(self.img)
+            Enhanced_img = contrastImg.enhance(self.contrast_value)     #adjusting image to desired contrast
 
-            display_image = ImageTk.PhotoImage(photo)
+            self.photo = Enhanced_img.resize((self.screen_width-700,self.screen_height-300))
+
+            display_image = ImageTk.PhotoImage(self.photo)
             self.video_display_label.config(image=display_image)
             self.video_display_label.image = display_image
 

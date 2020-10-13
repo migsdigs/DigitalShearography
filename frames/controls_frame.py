@@ -69,15 +69,11 @@ class ControlsFrame(ttk.Frame):
         initialisation_frame = ttk.Frame(main_control_frame, padding = 20)
         initialisation_frame.grid(row=0, column=4)
 
-        import_file_path_label = ttk.Label(initialisation_frame, text="Initialisation file")
-        import_file_path_label.grid(row=0, column=0)
+        import_config_file_label = ttk.Label(initialisation_frame, text="Initialisation file")
+        import_config_file_label.grid(row=0, column=0)
 
-        self.file_path = tk.StringVar()
-        self.import_entry = ttk.Entry(initialisation_frame, width=20, textvariable=self.file_path)
-        self.import_entry.grid(row=1, column=0)
-
-        self.import_button = ttk.Button(initialisation_frame, text="Import File")    #set command
-        self.import_button.grid(row=1, column=1)
+        self.config_button = ttk.Button(initialisation_frame, text="Import Config File", command=controller.set_config)    
+        self.config_button.grid(row=1, column=0)
 
 
 

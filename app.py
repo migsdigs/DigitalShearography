@@ -26,6 +26,7 @@ class DS_GUI(tk.Tk):
         self.controller = None                                                                 #use inheritance of tk.Tk class
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
+        
         #Configurations of the Root
         self.title("Digital Shearography - Project 55")                                                     #title of application
         self.geometry("{}x{}+0+0".format(screen_width, screen_height))              #set the size of the window to fullscreen by default
@@ -55,7 +56,7 @@ class DS_GUI(tk.Tk):
         self.controls_frame = ControlsFrame(main_container, controller)
         self.controls_frame.grid(row=0, column=0, columnspan=2, pady=(10), sticky="NSEW")
 
-        self.video_frame = VideoFrame(main_container, screen_width, screen_height, c, 33)
+        self.video_frame = VideoFrame(main_container, screen_width, screen_height, c, 33)   #pass in parent frame, screen height & width, camera object and delay between refreshing video
         self.video_frame.grid(row=1, column=0, pady=(30), padx=(30), sticky="NSEW")
         self.video_frame.display_video()
 
@@ -74,6 +75,7 @@ class DS_GUI(tk.Tk):
 ###################################################################################################################     
 ###################################################################################################################
 
+######################### CAMERA SETUP #########################
 
 bus = PyCapture2.BusManager()
 num_cams = bus.getNumOfCameras()
@@ -87,10 +89,17 @@ c = PyCapture2.Camera()             #Assign Camera object to C
 uid = bus.getCameraFromIndex(0)     #select camera on 0th index
 c.connect(uid)                      #connect camera object to physical camera
 
+# Disable On-board Image Processing
+c.setProperty(type = PyCapture2.PROPERTY_TYPE.AUTO_EXPOSURE, onOff = False)  #Disable/Enable Auto Exposure
+
+
 print('Starting image capture...')
 c.startCapture()
 
-controller = Controller()
+###################################################################################################################     
+###################################################################################################################
+
+controller = Controller()           #create object controller of the Controller() class
 app = DS_GUI()
 app.set_controller(controller)
 app.mainloop()
