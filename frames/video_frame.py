@@ -15,15 +15,15 @@ class VideoFrame(ttk.Frame):
         self.cam = cam      #camera object that is passed into the VideoFrame class
         self.delay = delay  #the delay between frame updates of the video display
 
-        self.video_pause = False            #A flag used to determine if video must be paused or playing
-        self.display_fringes_flag = False   #A flag to be used to determine if fringes or real time video must be displayed
+        self.video_pause = False            # A flag used to determine if video must be paused or playing
+        self.display_fringes_flag = False   # A flag to be used to determine if fringes or real time video must be displayed
+        self.mode_flag = False              # A flag used to 
         self.ref_image = None
         self.img = None
 
         #Camera Variable Values
         self.brightness_value = 1.0
         self.contrast_value = 1.0
-        self.exposure_value = 1.0
 
         #Frames
         video_frame = ttk.Frame(self)
@@ -38,13 +38,19 @@ class VideoFrame(ttk.Frame):
     def capture_reference_image(self):      #only to be called once
         ref_buffer = self.cam.retrieveBuffer()
         self.ref_image = np.array(ref_buffer.getData(), dtype="uint8").reshape( (ref_buffer.getRows(), ref_buffer.getCols()) )  #convert ref_buffer to numpy array to be used in subtraction of images
-        #self.ref_image = np.flip(self.ref_image, axis=0) 
+        
+        if self.mode_flag == True:
+            self.ref_image = np.flip(self.ref_image, axis=0)
+            self.ref_img = np.flip(self.ref_img, axis=1)
         self.ref_img = pl.Image.fromarray(self.ref_image)
 
     def display_video(self):
         image = self.cam.retrieveBuffer()
         cv_image1 = np.array(image.getData(), dtype="uint8").reshape( (image.getRows(), image.getCols()) )                      #convert image to numpy array
-        #cv_image1 = np.flip(cv_image1, axis=0)
+
+        if self.mode_flag == True:
+            cv_image1 = np.flip(cv_image1, axis=0)
+            cv_image1= np.flip(cv_image1, axis=1)
 
     #Display real time video or fringe patterns depending on the state of the flag
         if not self.display_fringes_flag:

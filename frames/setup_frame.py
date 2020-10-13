@@ -17,12 +17,25 @@ class SetupFrame(ttk.Frame):
         inspection_setup_label.grid(row=0, column=0, pady = 5)
 
         self.start_inspection_button = ttk.Button(inspection_setup_frame, text = "START INSPECTION", command = controller.start)     #set command
-        self.start_inspection_button.grid(row=1, column=0, pady=5, ipadx=40, ipady=20)
+        self.start_inspection_button.grid(row=1, column=0, pady=5, ipadx=40, ipady=15)
+
+            #Inspection Mode
+        inspection_mode_frame = ttk.Frame(inspection_setup_frame)
+        inspection_mode_frame.grid(row=2, column=0, pady=5)
+
+        inspection_mode_label = ttk.Label(inspection_mode_frame, text="Inspection Mode")
+        inspection_mode_label.grid(row=0, column=0, columnspan=2)
+
+        self.normal_mode_button = ttk.Button(inspection_mode_frame, text="Normal", state = "disabled", command = controller.set_normal_mode)   
+        self.normal_mode_button.grid(row=1, column=0)
+
+        self.four_f_mode_button = ttk.Button(inspection_mode_frame, text="4f", command = controller.set_four_f_mode)       
+        self.four_f_mode_button.grid(row=1, column=1)
 
 
             #Inspection Time Limit Frame, Label, check button, entry field
         inspection_time_limit_Frame = ttk.Frame(inspection_setup_frame)
-        inspection_time_limit_Frame.grid(row=2, column=0, pady=10)
+        inspection_time_limit_Frame.grid(row=3, column=0, pady=10)
 
         inspection_time_limit_label = ttk.Label(inspection_time_limit_Frame, text="Inspection Time Limit (minutes)", padding = 10)
         inspection_time_limit_label.grid(row=0, column=0, columnspan=3, sticky="EW")
@@ -50,7 +63,7 @@ class SetupFrame(ttk.Frame):
 
             #Frame Capture Interval
         Frame_capture_interval_frame = ttk.Frame(inspection_setup_frame)
-        Frame_capture_interval_frame.grid(row=3, column=0, pady=10)
+        Frame_capture_interval_frame.grid(row=4, column=0, pady=10)
 
         Frame_capture_interval_label = ttk.Label(Frame_capture_interval_frame, text="Frame Capture Interval (seconds)", padding = 10)
         Frame_capture_interval_label.grid(row=0, column=0, columnspan=3, sticky="EW")
@@ -79,7 +92,7 @@ class SetupFrame(ttk.Frame):
 
             #Reference Image Delay
         reference_image_delay_frame = ttk.Frame(inspection_setup_frame)
-        reference_image_delay_frame.grid(row=4, column=0, pady=10)
+        reference_image_delay_frame.grid(row=5, column=0, pady=10)
 
         reference_image_delay_label = ttk.Label(reference_image_delay_frame, text="Reference Image Delay (seconds)", padding = 10)
         reference_image_delay_label.grid(row=0, column=0, columnspan=3, sticky="EW")

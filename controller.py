@@ -38,6 +38,17 @@ class Controller():
     def set_setup_frame(self, frame):
         self.setup_frame = frame
 
+    
+    ######################## METHODS INSPECTION MODE ########################
+    def set_normal_mode(self):
+        self.setup_frame.normal_mode_button["state"] = "disabled"
+        self.setup_frame.four_f_mode_button["state"] = "enabled"
+        self.video_frame.mode_flag = False
+    
+    def set_four_f_mode(self):
+        self.setup_frame.normal_mode_button["state"] = "enabled"
+        self.setup_frame.four_f_mode_button["state"] = "disabled"
+        self.video_frame.mode_flag = True
 
     ######################## METHODS FOR VIDEO CONTROL ########################
 
@@ -158,6 +169,9 @@ class Controller():
         self.controls_frame.folder_set_button["state"] = "disabled"
 
         self.controls_frame.config_button["state"] = "disabled"
+
+        self.setup_frame.normal_mode_button["state"] = "disabled"
+        self.setup_frame.four_f_mode_button["state"] = "disabled"
 
         self.reference_image()      #call take_reference_image method
         self.frame_capture_save()   #call frame_capture_save
