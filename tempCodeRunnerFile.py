@@ -1,2 +1,2 @@
 
-app.set_controller(controller)
+c = PyCapture2.Camera()             #Assign Camera object to C

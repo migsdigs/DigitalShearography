@@ -57,8 +57,11 @@ class VideoFrame(ttk.Frame):
             self.img = pl.Image.fromarray(cv_image1)
 
             contrastImg = ImageEnhance.Contrast(self.img)
-            Enhanced_img = contrastImg.enhance(self.contrast_value)     #adjusting image to desired contrast
+            contrastedImage = contrastImg.enhance(self.contrast_value)     #adjusting image to desired contrast
             
+            brightnessImg = ImageEnhance.Brightness(contrastedImage)
+            Enhanced_img = brightnessImg.enhance(self.brightness_value)
+
             self.photo = Enhanced_img.resize((self.screen_width-700,self.screen_height-300))
             
             display_image = ImageTk.PhotoImage(self.photo)
@@ -71,7 +74,10 @@ class VideoFrame(ttk.Frame):
             self.img = pl.Image.fromarray(self.difference)
             
             contrastImg = ImageEnhance.Contrast(self.img)
-            Enhanced_img = contrastImg.enhance(self.contrast_value)     #adjusting image to desired contrast
+            contrastedImage = contrastImg.enhance(self.contrast_value)     #adjusting image to desired contrast
+
+            brightnessImg = ImageEnhance.Brightness(contrastedImage)
+            Enhanced_img = brightnessImg.enhance(self.brightness_value)
 
             self.photo = Enhanced_img.resize((self.screen_width-700,self.screen_height-300))
 

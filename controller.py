@@ -331,10 +331,21 @@ class Controller():
         #config contrast
         try:
             self.video_frame.contrast_value = float(config['cameraVariables']['CONTRAST'])
-            print('contrast set')
+            print('contrast set')           #remove later
         except:
             self.video_frame.contrast_value = 1.0
-            print('contrast defaulted')
+            print('contrast defaulted')     #remove later
+
+
+        #config brightness
+        try:
+            self.video_frame.brightness_value = float(config['cameraVariables']['BRIGHTNESS'])
+            print('brightness set')     #remove later
+
+        except:
+            self.video_frame.brightness_value = 1.0
+            print('brightness defaulted')   #remove later
+            
 
         #config inspection time limit
         try:
