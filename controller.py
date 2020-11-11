@@ -6,15 +6,16 @@ config_file = 'config.ini'
 config = ConfigParser()
 config.read(config_file)
 
-class Controller():
-    def __init__(self):
+class Controller():                 #create the Controller class
+    def __init__(self):             #initialise the class
         self.video_frame = None
         self.controls_frame = None
+        self.setup_frame = None
 
         self.inspection_time_limit_flag = False     #flag state determines if inspection time limit is going to be used or not
         self.reference_image_delay_flag = False     #flag state determines if reference image delay is going to be used or not
         self.frame_capture_interval_flag = False    #flag state determines if frames saving at a set interval is going to be used or not
-        self.reference_image_taken_flag = True      #flag state indicates whether the reference image has been taken or not
+
         self.save_count = 0
         self.interval_save_count = 0
 
@@ -28,8 +29,11 @@ class Controller():
 
     
     ######################## METHODS FOR SETTING FRAMES TO CONTROL ########################
+    # assign the frame classes in the DS_GUI class to the 
+    # objects of the controller (allows for attributes 
+    # of the frame classes to be accessed in the controller class)
     
-    def set_video_frame(self, frame):   #assign the video_frame class from the DS_GUI class to the video_frame object of the controller (allows for methods from video_frame class to be called in controller)
+    def set_video_frame(self, frame):   
         self.video_frame = frame
 
     def set_controls_frame(self, frame):
@@ -40,6 +44,7 @@ class Controller():
 
     
     ######################## METHODS INSPECTION MODE ########################
+
     def set_normal_mode(self):
         self.setup_frame.normal_mode_button["state"] = "disabled"
         self.setup_frame.four_f_mode_button["state"] = "enabled"
@@ -75,6 +80,8 @@ class Controller():
         self.controls_frame.snapshot_button["state"] = "disabled"
         self.controls_frame.real_time_video_button["state"] = "disabled"
         self.controls_frame.fringe_pattern_button["state"] = "disabled"
+        
+        self.frame_capture_interval = 0     #if frames are set to be captured at set intervals, stop capturing frames
 
 
     def display_fringes(self):  #display fringes when fringe display button is pressed
@@ -92,17 +99,19 @@ class Controller():
     ######################## METHODS FOR IMAGES & SAVING ########################
   
     def save_snapshot(self):    #method to save images when snapshot button is hit
-        if self.save_location_flag:
-            try:
+        if self.save_location_flag:     #if a custom save location has been provided
+            try:                        #try save the image to the provided location
                 snapshot_name = self.save_location+"\\snapshot"+str(self.save_count)+".jpeg"
                 self.video_frame.photo.save(snapshot_name)
-            except:
+
+            except:                     #if an error occurs, save the image to the default save location
                 snapshot_name = "snapshot"+str(self.save_count)+".jpeg"
                 self.video_frame.photo.save(snapshot_name)
-        else:
+
+        else:                           #else, save the image to the default save location
             snapshot_name = "snapshot"+str(self.save_count)+".jpeg"
             self.video_frame.photo.save(snapshot_name)
-        self.save_count = self.save_count+1
+        self.save_count = self.save_count+1     #increment the save count by 1
 
 
     def save_ref_image(self):   #method to save the reference image once it is taken
@@ -141,9 +150,49 @@ class Controller():
     def get_save_location(self):
         self.save_location = self.controls_frame.folder_directory.get()
         self.save_location_flag = True
-        print(self.save_location)
         
 
+    ######################## METHOD FOR RESETTING INSPECTION ########################
+
+    def reset(self):
+        self.setup_frame.start_inspection_button["state"] = "enabled"
+
+        self.controls_frame.play_button["state"] = "disabled"
+        self.controls_frame.pause_button["state"] = "disabled"
+        self.controls_frame.stop_button["state"] = "disabled"
+
+        #self.controls_frame.snapshot_button["state"] = "disabled"
+        self.controls_frame.new_inspection_button["state"] = "disabled"
+
+        self.controls_frame.folder_set_button["state"] = "enabled"
+        self.controls_frame.config_button["state"] = "enabled"
+
+        #self.video_frame.ref_image = None
+        self.video_frame.display_fringes_flag = False                       #change display mode back to real time video display
+        self.controls_frame.real_time_video_button["state"] = "disabled"
+        self.controls_frame.fringe_pattern_button["state"] = "disabled"
+        
+        self.video_frame.mode_flag = False                                  #change inspection made back to normal inspection
+        self.setup_frame.four_f_mode_button["state"] = "enabled"
+        self.setup_frame.normal_mode_button["state"] = "disabled"
+
+        self.setup_frame.inspection_time_limit_check_button["state"] = "enabled"
+        self.setup_frame.frame_capture_interval_check_button["state"] = "enabled"
+        self.setup_frame.reference_image_delay_check_button["state"] = "enabled"
+
+        self.inspection_time_limit = 0                                          #reset inspection time limit
+        self.setup_frame.inspection_time_limit_value_label["text"] = "None"     
+
+        self.frame_capture_interval = 0                                         #reset frame capture interval
+        self.setup_frame.frame_capture_interval_value_label["text"] = "None"
+
+        self.reference_image_delay = 0                                          #reset reference image delay
+        self.setup_frame.reference_image_delay_value_label["text"] = "None"
+
+        if self.video_frame.video_pause:        #if the display has been paused and stopped, display real time video again 
+            self.video_frame.play_video()
+
+        
     ######################## METHODS FOR START INSPECTION ########################
 
     def start(self):
@@ -163,7 +212,8 @@ class Controller():
 
         self.setup_frame.start_inspection_button["state"] = "disabled"
 
-        self.controls_frame.snapshot_button["state"] = "enabled"
+        #self.controls_frame.snapshot_button["state"] = "enabled"
+        self.controls_frame.new_inspection_button["state"] = "enabled"
 
         self.controls_frame.folder_entry["state"] = "disabled"
         self.controls_frame.folder_set_button["state"] = "disabled"
@@ -208,8 +258,9 @@ class Controller():
         self.pause()
         self.video_frame.video_display_label.after(500, lambda: self.stop())    #after 500 ms stop inspection and disconnect camera
         print("limit reached")
-        exit()
+        #exit()
     
+
 
     ######################## METHODS FOR INSPECTION SETUP ########################
     def inspection_time_limit_command(self):    #Sets flags to true or false and enables/disables buttons & entry based on checkbuttons status                   
@@ -298,30 +349,38 @@ class Controller():
     def set_brightness(self):
         try:
             self.video_frame.brightness_value = self.setup_frame.brightness.get()
+            self.setup_frame.brightness_value_label["text"] = str(self.video_frame.brightness_value)
             print(self.video_frame.brightness_value)
         
         except:
             self.video_frame.brightness_value = 1.0
+            self.setup_frame.brightness_value_label["text"] = str(self.video_frame.brightness_value)
             print(self.video_frame.brightness_value)
 
 
     def reset_brightness(self):
         self.video_frame.brightness_value = 1.0
+        self.setup_frame.brightness_entry.delete(0, "end")
+        self.setup_frame.brightness_value_label["text"] = str(self.video_frame.brightness_value)
         print(self.video_frame.brightness_value)
 
     
     def set_contrast(self):
         try:
             self.video_frame.contrast_value = self.setup_frame.contrast.get()
+            self.setup_frame.contrast_value_label["text"] = str(self.video_frame.contrast_value)
             print(self.video_frame.contrast_value)
         
         except:
             self.video_frame.contrast_value = 1.0
+            self.setup_frame.contrast_value_label["text"] = str(self.video_frame.contrast_value)
             print(self.video_frame.contrast_value)
 
     
     def reset_contrast(self):
         self.video_frame.contrast_value = 1.0
+        self.setup_frame.contrast_entry.delete(0, "end")
+        self.setup_frame.contrast_value_label["text"] = str(self.video_frame.contrast_value)
         print(self.video_frame.contrast_value)
 
 
@@ -331,20 +390,19 @@ class Controller():
         #config contrast
         try:
             self.video_frame.contrast_value = float(config['cameraVariables']['CONTRAST'])
-            print('contrast set')           #remove later
+
         except:
             self.video_frame.contrast_value = 1.0
-            print('contrast defaulted')     #remove later
+
 
 
         #config brightness
         try:
             self.video_frame.brightness_value = float(config['cameraVariables']['BRIGHTNESS'])
-            print('brightness set')     #remove later
 
         except:
             self.video_frame.brightness_value = 1.0
-            print('brightness defaulted')   #remove later
+
             
 
         #config inspection time limit
@@ -352,13 +410,11 @@ class Controller():
             self.inspection_time_limit = float(config['inspectionSetup']['INSPECTION_TIME_LIMIT'])
             self.setup_frame.inspection_time_limit_value_label["text"] = str(self.inspection_time_limit)
             self.inspection_time_limit_flag = True
-            print('inspection time limit set')  #remove later
-        
+
         except:
             self.inspection_time_limit = 0
             self.setup_frame.inspection_time_limit_value_label["text"] = "None"
 
-            print('inspection time limit defaulted')    #remove later
         
 
         #config frame capture interval
@@ -366,12 +422,10 @@ class Controller():
             self.frame_capture_interval = float(config['inspectionSetup']['FRAME_CAPTURE_INTERVAL'])
             self.setup_frame.frame_capture_interval_value_label["text"] = str(self.frame_capture_interval)
             self.frame_capture_interval_flag = True
-            print('frame capture interval set')  #remove later
         
         except:
             self.frame_capture_interval = 0
             self.setup_frame.frame_capture_interval_value_label["text"] = "None"
-            print('frame capture interval defaulted')   #remove later
 
         
         #config reference image delay
@@ -379,12 +433,11 @@ class Controller():
             self.reference_image_delay = float(config['inspectionSetup']['REFERENCE_IMAGE_DELAY'])
             self.setup_frame.reference_image_delay_value_label["text"] = str(self.reference_image_delay)
             self.reference_image_delay_flag = True
-            print('reference image delay set')  #remove later
         
         except:
             self.reference_image_delay = 0
             self.setup_frame.reference_image_delay_value_label["text"] = "None"
-            print("reference image delay defaulted")    #remove later
 
 
-        self.controls_frame.config_button['state'] = 'disabled'
+        self.controls_frame.config_button['state'] = 'disabled' 
+        # Above: disable the config_button after importing config file

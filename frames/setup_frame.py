@@ -1,11 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
 
-class SetupFrame(ttk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
+class SetupFrame(ttk.Frame):            #create a class of type ttk.Frame
+    def __init__(self, parent, controller): #initialise the class
+        super().__init__(parent)        #call the constructor of the ttk.Frame
+                                        #class to inherit its and the parent's
+                                        #properties
 
-        self.columnconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)   
 
         #inspection setup frame
         inspection_setup_frame = ttk.Frame(self)
@@ -35,7 +37,7 @@ class SetupFrame(ttk.Frame):
 
             #Inspection Time Limit Frame, Label, check button, entry field
         inspection_time_limit_Frame = ttk.Frame(inspection_setup_frame)
-        inspection_time_limit_Frame.grid(row=3, column=0, pady=10)
+        inspection_time_limit_Frame.grid(row=3, column=0, pady=5)
 
         inspection_time_limit_label = ttk.Label(inspection_time_limit_Frame, text="Inspection Time Limit (minutes)", padding = 10)
         inspection_time_limit_label.grid(row=0, column=0, columnspan=3, sticky="EW")
@@ -63,7 +65,7 @@ class SetupFrame(ttk.Frame):
 
             #Frame Capture Interval
         Frame_capture_interval_frame = ttk.Frame(inspection_setup_frame)
-        Frame_capture_interval_frame.grid(row=4, column=0, pady=10)
+        Frame_capture_interval_frame.grid(row=4, column=0, pady=5)
 
         Frame_capture_interval_label = ttk.Label(Frame_capture_interval_frame, text="Frame Capture Interval (seconds)", padding = 10)
         Frame_capture_interval_label.grid(row=0, column=0, columnspan=3, sticky="EW")
@@ -92,7 +94,7 @@ class SetupFrame(ttk.Frame):
 
             #Reference Image Delay
         reference_image_delay_frame = ttk.Frame(inspection_setup_frame)
-        reference_image_delay_frame.grid(row=5, column=0, pady=10)
+        reference_image_delay_frame.grid(row=5, column=0, pady=5)
 
         reference_image_delay_label = ttk.Label(reference_image_delay_frame, text="Reference Image Delay (seconds)", padding = 10)
         reference_image_delay_label.grid(row=0, column=0, columnspan=3, sticky="EW")
@@ -122,7 +124,7 @@ class SetupFrame(ttk.Frame):
         ####################### CAMERA VARIABLES #######################
         #Camera Variables Frame
         camera_variables_frame = ttk.Frame(self)
-        camera_variables_frame.grid(row=1, column=0, pady=25)
+        camera_variables_frame.grid(row=1, column=0, pady=15)
 
         #Inside Camera Variables Frame
             #Camera Variable Label
@@ -134,11 +136,15 @@ class SetupFrame(ttk.Frame):
         brightness_frame.grid(row=1, column=0)
         
         brightness_label = ttk.Label(brightness_frame, text="Brightness", padding =5)
-        brightness_label.grid(row=0, column=0, columnspan=3)
+        brightness_label.grid(row=0, column=0)
+
+        self.brightness_value_label = ttk.Label(brightness_frame, text="1.0", padding = 5)
+        self.brightness_value_label.grid(row=0, column=1)
 
         self.brightness = tk.DoubleVar()
-        brightness_entry = ttk.Entry(brightness_frame, width=6, textvariable=self.brightness)
-        brightness_entry.grid(row=1, column=0)
+        self.brightness_entry = ttk.Entry(brightness_frame, width=6, textvariable=self.brightness)
+        self.brightness_entry.grid(row=1, column=0)
+        self.brightness_entry.delete(0, 'end')
 
         brightness_set_button = ttk.Button(brightness_frame, text="Set", command = controller.set_brightness)        #set command
         brightness_set_button.grid(row=1, column=1)
@@ -152,11 +158,15 @@ class SetupFrame(ttk.Frame):
         contrast_frame.grid(row=2, column=0)
 
         contrast_label = ttk.Label(contrast_frame, text=" Contrast ", padding = 5)
-        contrast_label.grid(row=0, column=0, columnspan=3)
+        contrast_label.grid(row=0, column=0)
+
+        self.contrast_value_label = ttk.Label(contrast_frame, text="1.0", padding = 5)
+        self.contrast_value_label.grid(row=0, column=1)
 
         self.contrast = tk.DoubleVar()
-        contrast_entry = ttk.Entry(contrast_frame, width=6, textvariable=self.contrast)
-        contrast_entry.grid(row=1, column=0)
+        self.contrast_entry = ttk.Entry(contrast_frame, width=6, textvariable=self.contrast)
+        self.contrast_entry.grid(row=1, column=0)
+        self.contrast_entry.delete(0, 'end')
 
         contrast_set_button = ttk.Button(contrast_frame, text="Set", command = controller.set_contrast)           
         contrast_set_button.grid(row=1, column=1)
@@ -165,22 +175,7 @@ class SetupFrame(ttk.Frame):
         contrast_reset_button.grid(row=1, column=2, sticky="EW")
 
 
-            #Exposure (or whatever) Label and Entry
-        exposure_frame = ttk.Frame(camera_variables_frame)
-        exposure_frame.grid(row=3, column=0)
 
-        exposure_label = ttk.Label(exposure_frame, text=" Exposure ", padding = 5)
-        exposure_label.grid(row=0, column=0, columnspan=3)
-
-        self.exposure = tk.DoubleVar()
-        exposure_entry = ttk.Entry(exposure_frame, width=6, textvariable=self.exposure)
-        exposure_entry.grid(row=1, column=0)
-
-        exposure_set_button = ttk.Button(exposure_frame, text="Set")
-        exposure_set_button.grid(row=1, column=1)
-
-        exposure_reset_button = ttk.Button(exposure_frame, text="Reset")        #set command
-        exposure_reset_button.grid(row=1, column=2, sticky="EW")
 
     
 

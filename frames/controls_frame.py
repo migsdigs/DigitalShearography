@@ -3,11 +3,11 @@
 import tkinter as tk
 from tkinter import ttk
 
-class ControlsFrame(ttk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-
-        self.controller = controller
+class ControlsFrame(ttk.Frame):     #create a class of type ttk.Frame
+    def __init__(self, parent, controller): #initialise the class
+        super().__init__(parent)    #call the constructor of the ttk.Frame
+                                    #class to inherit its and the parent's
+                                    #properties
 
         #Main Control Frame
         main_control_frame = ttk.Frame(self)
@@ -18,10 +18,10 @@ class ControlsFrame(ttk.Frame):
         snapshot_frame = ttk.Frame(main_control_frame, padding=15)
         snapshot_frame.grid(row=0, column=0)
 
-        self.new_window_button = ttk.Button(snapshot_frame, text="New Inspection", state="disabled")   #set command
-        self.new_window_button.grid(row=0, column=0)
+        self.new_inspection_button = ttk.Button(snapshot_frame, text="New Inspection", state="disabled", command=controller.reset)   
+        self.new_inspection_button.grid(row=0, column=0)
 
-        self.snapshot_button = ttk.Button(snapshot_frame, text="Snapshot Frame", state="disabled", command=controller.save_snapshot)
+        self.snapshot_button = ttk.Button(snapshot_frame, text="Snapshot Frame", state="enabled", command=controller.save_snapshot)
         self.snapshot_button.grid(row=0, column=1)
 
 
