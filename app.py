@@ -1,7 +1,8 @@
-#Imports
+# Imports
 import tkinter as tk
 from tkinter import ttk
-from frames import VideoFrame, ControlsFrame, SetupFrame
+from frames import VideoFrame, ControlsFrame, SetupFrame 
+# Above: import Frame classes from frames folder
 
 from controller import Controller
 import PyCapture2
@@ -21,8 +22,8 @@ class DS_GUI(tk.Tk):                        #create a class of type Tk class
                                             #class to inherit properties
         
         self.controller = None                                              
-        screen_width = self.winfo_screenwidth()         #get the width of the screen                         
-        screen_height = self.winfo_screenheight()       #get the height of the screen
+        screen_width = self.winfo_screenwidth()     #get the width of the screen                         
+        screen_height = self.winfo_screenheight()   #get the height of the screen
         
         #Configurations of the Root
         self.title("Digital Shearography - Project 55")
@@ -37,28 +38,36 @@ class DS_GUI(tk.Tk):                        #create a class of type Tk class
         #Main Container to Hold the Class Frames (video, control and setup)
         main_container = ttk.Frame(self)
         main_container.grid(row=0, column=0)
-        main_container.columnconfigure(0, weight=2)
+
+        main_container.columnconfigure(0, weight=2) 
         main_container.columnconfigure(1, weight=1)
+        # Above: column 0 of main_container is given 2 times the space
+        #        of row 1
 
         main_container.rowconfigure(0, weight=1)        
         main_container.rowconfigure(1, weight=7)
+        # Above: row 0 of main_container is given 7 times the space
+        #        of row 1
 
 
-        #Frames inside main container
-        self.controls_frame = ControlsFrame(main_container, controller)
+        # Frames inside main container
+        # 1. ControlsFrame
+        self.controls_frame = ControlsFrame(main_container, controller) 
         self.controls_frame.grid(row=0, column=0, columnspan=2, pady=(10), sticky="NSEW")
 
-        self.video_frame = VideoFrame(main_container, screen_width, screen_height, c, 33)   #pass in parent frame, screen height & width, camera object and delay between refreshing video
+        # 2. VideoFrame
+        self.video_frame = VideoFrame(main_container, screen_width, screen_height, c, 33)   
+        # Above: pass in parent frame, screen height & width, camera object and delay between refreshing video frames
         self.video_frame.grid(row=1, column=0, pady=(30), padx=(30), sticky="NSEW")
         self.video_frame.display_video()
 
-
+        # 3. SetupFrame
         self.setup_frame = SetupFrame(main_container, controller)
         self.setup_frame.grid(row=1, column=1, pady=(30), padx=(30), sticky="NSEW")
 
     def set_controller(self, controller):   #pass in Controller class as the controller 
         self.controller = controller
-        # Below: create copies of the frame classes 
+        # Below: create instances of the frame classes 
         # so that they can be accessed in the controller
         controller.set_video_frame(self.video_frame)
         controller.set_controls_frame(self.controls_frame)
@@ -71,37 +80,37 @@ class DS_GUI(tk.Tk):                        #create a class of type Tk class
 
 ######################### CAMERA SETUP #########################
 
-bus = PyCapture2.BusManager()                   #identify the Globally Unique Identifier (GUID) of the camera
-num_cams = bus.getNumOfCameras()                #determine the number of cameras connected to the PC
-print('Number of cameras detected:', num_cams)  #print the number of cameras detected
-if not num_cams:                                #if no cameras are detected exit the application
+bus = PyCapture2.BusManager()                   # identify the Globally Unique Identifier (GUID) of the camera
+num_cams = bus.getNumOfCameras()                # determine the number of cameras connected to the PC
+print('Number of cameras detected:', num_cams)  # print the number of cameras detected
+if not num_cams:                                # if no cameras are detected exit the application
     print('Insufficient number of cameras. Exiting...')
     exit()
 
 # Select camera on 0th index
-c = PyCapture2.Camera()             #Assign Camera object to C
-uid = bus.getCameraFromIndex(0)     #select camera on 0th index
-c.connect(uid)                      #connect camera object to physical camera
+c = PyCapture2.Camera()             # Assign Camera object to C
+uid = bus.getCameraFromIndex(0)     # select camera on 0th index
+c.connect(uid)                      # connect camera object to physical camera
 
 # Disable On-board Image Processing
 c.setProperty(type = PyCapture2.PROPERTY_TYPE.AUTO_EXPOSURE, onOff = False)  #Disable Auto Exposure
 
 print('Starting image capture...')
-c.startCapture()                    #start capturing data from the camera to the image buffers
+c.startCapture()                    # start capturing data from the camera to the image buffers
 
 ###################################################################################################################     
 ###################################################################################################################
 
-controller = Controller()           #create object controller of the Controller() class
-app = DS_GUI()
-app.set_controller(controller)
-app.mainloop()
+controller = Controller()           # create object controller of the Controller() class
+app = DS_GUI()                      # create a DS_GUI object
+app.set_controller(controller)      # use the DS_GUI.set_controller() methods to assign the controller
+app.mainloop()                      # call DS_GUI inherited method, mainloop() to run the application
 
-try:
-    c.stopCapture()
-    print("stopping capture")
-    c.disconnect()
+try:                                # try:
+    c.stopCapture()                 # stop capturing data from the camera to the image buffers
+    print("stopping capture")       
+    c.disconnect()                  # disconnect the camera object from the physical camera
     print("camera disconnected")
 
-except:
-    exit()
+except:                             # except:
+    exit()                          # close application
