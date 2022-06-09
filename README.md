@@ -23,5 +23,3 @@ An excerpt of the results shown above shows the improved field of view obtained 
 ## Running the code for the GUI
 
 The GUI was developed to interface with the camera and provide some additional functionality, such as tuning of camera parameters. For further documentation regarding the execution of this GUI for this project please see [the Technical README](README_technical.txt) and [the PyCapture2 README](README_PyCapture2.txt).
-
-Further documentation regarding the execution of the simulations produced for this project can be found in the ```examples``` folder of this repository.
