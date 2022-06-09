@@ -12,14 +12,16 @@ Digital Shearography is an optical non-destructive testing technique that is use
 
 ## Excerpt of Results
 |   |
-|---|
-| ![original_fov](/results/original_fov) <br> Field of View of Existing Prototype| 
-| ![4f_fov](/results/results/obtained_fov_with_4f) <br> Field of View of Revised Prototype with a 4f system incorporated|
-|![defect_detection](/results/comparrison) <br> Defect detection (formation of fringe patterns) using the revised prototype (left) and the existing prototype (right)|
+|:-:|
+| ![original_fov](/results/original_fov.png) <br> Field of View of Existing Prototype| 
+| ![4f_fov](/results/obtained_fov_with_4f.png) <br> Field of View of Revised Prototype with a 4f system incorporated|
+|![defect_detection](/results/comparrison.png) <br> Defect detection (formation of fringe patterns) using the revised prototype (left) and the existing prototype (right)|
 
 
-An excerpt of the results shown above allude to the advantages of dynamic colour targets for objects with slowly changing color distributions. Other results highlight the filters general ability to track, as well as highlighting the shortfalls of tracking under extremely dynamic lighting conditions.
+An excerpt of the results shown above shows the improved field of view obtained by using the revised design. However, as can be seen by the figure in which the prototypes are used for defect detection, the revised design is unable to produce the same level of image quality as the existing one. This is likely due to the limitations with regards to the available machining capabilities. Incorporating a 4f system introduces many more opportunities for errors to arise as even the slight misplacement of a lens, mirror or camera sensor will result in loss of image quality. Making use of more precise machining would thus likely give rise to a highly capable prototype for conducting digital shearography.
 
-## Running the code
+## Running the code for the GUI
+
+The GUI was developed to interface with the camera and provide some additional functionality, such as tuning of camera parameters. For further documentation regarding the execution of this GUI for this project please see [the Technical README](README_technical.txt) and [the PyCapture2 README](README_PyCapture2.txt).
 
 Further documentation regarding the execution of the simulations produced for this project can be found in the ```examples``` folder of this repository.
