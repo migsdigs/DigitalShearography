@@ -7,8 +7,15 @@ Authors : [Miguel Garcia Naude](https://github.com/migsdigs)
 Digital Shearography is an optical non-destructive testing technique that is used to inspect objects for defects. The benefits of Non-destructive testing and in particular, Digital Shearography, has resulted in it being useful in maintenance and quality conformance in automotive and aeronautical industries. Most Digital Shearography devices make use of Michelson Interferometers as their shearing device,however devices making use of this shearing device are limited to having a small angular field of view. By incorporating a 4f system into a Michelson Interferometer based inspection device, the angular field of view of the system is no longer limited by the Michelson Interferometer, thus maximising the camera field of view. By developing a user-friendly GUI to interact with the developed inspection device, the Shearographic Inspection process is managed and fringe patterns resulting from real-time subtraction of images using Digital Shearography are displayed. This enables non-destructive tests to be effectively carried out in order to gather object defect information. 
 
 ## Products
+|   |   |
+|:-:|:-:|
+| ![device](/products/device.png) <br> Assembled Prototype| ![device2](/products/device2.png) <br> Internal Components of Assembled Prototype displaying 4f system |
+
 |   |
-|---|
+|:-:|
+| ![GUI](/products/gui.png) <br> Developed Graphical User Interface|
+
+The above shows the developed products for this project. The first two images display the designed and assembled Digital Shearography system incorporating a 4f System (notice how the camera lens is separated from the camera). The third image is a screenshot of the developed GUI. Key features include the live camera display and the parameter tuning options on the right of the screen.
 
 ## Excerpt of Results
 |   |
